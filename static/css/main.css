@@ -1,0 +1,32 @@
+body{
+    background-color: #212342;
+    color: #fff;
+}
+/* navbar */
+.navbar-bg{
+    background-color: #29b0ef;
+    box-shadow: 0 3px 3px #0000009e;
+    position: fixed;
+    width: 100%;
+    z-index: 9999;
+    top: 0;
+}
+nav .nav-link:hover{
+    background-color: #343a40;
+}
+.nav-btns{
+    background-color: #343a40;
+}
+/* home */
+#home-movies .movie-wrapper{
+    height: 360px;
+}
+.movie-title{
+    position: relative;
+    bottom: 50px;
+    z-index: 999;
+}
+/* footer */
+footer{
+    background-color: rgba(12,13,17,.7);
+}
