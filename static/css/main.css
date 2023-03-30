@@ -1,6 +1,6 @@
 body{
-    background-color: #212342;
-    color: #fff;
+    background-color: #212342!important;
+    color: #fff!important;
 }
 /* navbar */
 .navbar-bg{
@@ -17,6 +17,10 @@ nav .nav-link:hover{
 .nav-btns{
     background-color: #343a40;
 }
+.nav-btns:hover{
+    background-color: #fff!important;
+    color: #343a40!important;
+}
 /* home */
 #home-movies .movie-wrapper{
     height: 360px;
@@ -29,4 +33,43 @@ nav .nav-link:hover{
 /* footer */
 footer{
     background-color: rgba(12,13,17,.7);
+    bottom: 0px;
+    position: absolute;
+    width: 100%;
+}
+/* Login Form */
+.login-bg{
+    background-color: rgba(12,13,17,.7);
+    position: relative;
+    top: 230px;
+}
+.login-bg .border-form{
+    border-right: 1px solid rgba(255,255,255,.1);
+}
+.login-bg input:not(.btn){
+    display: block;
+    width: 100%;
+    margin-bottom: 25px;
+    font-size: 14px;
+    padding: 0 15px;
+    line-height: 1;
+    height: 42px;
+    border-radius: 3px;
+    border: 0;
+}
+.login-bg input:not(.btn):focus{
+    box-shadow: none!important;
+    border: 0;
+}
+.login-bg .submit{
+    background: #e80036;
+    color: #fff;
+    border-radius: 5px;
+    padding: 0 25px;
+    font-size: 16px;
+    height: 42px;
+    line-height: 40px;
+}
+.login-bg .submit:hover{
+    background: #f96b6b;
 }
