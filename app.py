@@ -27,7 +27,7 @@ def login():
      return render_template('login.html', form=loginForm)
 
 if __name__ == "__main__":
-<<<<<<< HEAD
+
     app.run(host='0.0.0.0', debug=True)
 
 from flask import Flask, render_template, flash, redirect, url_for, session
@@ -61,6 +61,5 @@ def login():
 if __name__ == "__main__":
     app.run(debug=True)
 
-=======
+
     app.run(debug=True)
->>>>>>> 8faa3867eb6bbdecc7aa6ecc146ec457896265b1
