@@ -2,7 +2,10 @@ from flask_wtf import FlaskForm
 from wtforms import StringField, SelectField, SubmitField, DateField, TextAreaField, PasswordField
 from wtforms.validators import Email
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> 8faa3867eb6bbdecc7aa6ecc146ec457896265b1
 class AddFilmForm(FlaskForm):
     title = StringField("Titel:")
     description = TextAreaField("Beschrijving:")
@@ -20,8 +23,12 @@ class AddFilmForm(FlaskForm):
     actor4_firstname = StringField("Voornaam:")
     actor4_lastname = StringField("Achternaam:")
     submit = SubmitField("Toevoegen")
+<<<<<<< HEAD
 
 
+=======
+    
+>>>>>>> 8faa3867eb6bbdecc7aa6ecc146ec457896265b1
 class Login(FlaskForm):
     email = StringField("E-mail:", validators=[Email()], render_kw={"placeholder": "E-mail"})
     password = PasswordField("Wachtwoord:", render_kw={"placeholder": "Wachtwoord"})
