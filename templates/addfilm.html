@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+
+{% block title %}
+Film toevoegen
+{% endblock %}
+
+{% block contents %}
+<section id="add-movie" class="py-5">
+    <h3>Een film toevoegen</h3>
+    <form method="post" action="/vote">
+        {{ form.hidden_tag() }}
+        <div class="mb-3">
+            {{ form.title.label }} {{ form.title }}
+        </div>
+        <div class="mb-3">
+            {{ form.description.label }} {{ form.description }}
+        </div>
+        <div class="mb-3">
+            {{ form.release_date.label }} {{ form.release_date }}
+        </div>
+        <div class="mb-3">
+            {{ form.category.label }} {{ form.category }}
+        </div>
+        <div class="mb-2">Regisuur:</div>
+        <div class="mb-3">
+            {{ form.actor1_firstname.label }} {{ form.actor1_firstname }}
+            {{ form.actor1_lastname.label }} {{ form.actor1_lastname }}
+        </div>
+        <div class="mb-2">Actoren:</div>
+        <div class="mb-3">
+            <div>Actor1</div>
+            {{ form.actor1_firstname.label }} {{ form.actor1_firstname }}
+            {{ form.actor1_lastname.label }} {{ form.actor1_lastname }}
+        </div>
+        <div class="mb-3">
+            <div>Actor2</div>
+            {{ form.actor2_firstname.label }} {{ form.actor2_firstname }}
+            {{ form.actor2_lastname.label }} {{ form.actor2_lastname }}
+        </div>
+        <div class="mb-3">
+            <div>Actor3</div>
+            {{ form.actor3_firstname.label }} {{ form.actor3_firstname }}
+            {{ form.actor3_lastname.label }} {{ form.actor4_lastname }}
+        </div>
+        <div class="mb-3">
+            <div>Actor4</div>
+            {{ form.actor4_firstname.label }} {{ form.actor4_firstname }}
+            {{ form.actor4_lastname.label }} {{ form.actor4_lastname }}
+        </div>
+        {{ form.submit() }}
+    </form>
+</section>
+{% endblock %}
