@@ -8,9 +8,9 @@ Inloggen
 <div class="col-8 login-bg rounded mx-auto">
     <div class="row">
         <div class="col-6 p-5 border-form">
-            <form method="post" action="">
+            <form method="POST">
                 {{ form.hidden_tag() }}
-                <div class="mb-3">{{ form.email.label(class="mb-2 fw-bold") }} {{ form.email(class="form-control", type="email") }}</div>
+                <div class="mb-3">{{ form.username.label(class="mb-2 fw-bold") }} {{ form.username(class="form-control") }}</div>
                 <div class="mb-3">{{ form.password.label(class="mb-2 fw-bold") }} {{ form.password(class="form-control") }}</div>
                 <div class="mb-3">{{ form.submit(class="btn submit") }}</div>
             </form>
@@ -19,7 +19,7 @@ Inloggen
             <div class="d-flex align-items-center h-100">
                 <div>
                     <h3 class="mb-4">Geen account nog? Je kan nu registreren!</h3>
-                    <a class="text-decoration-none btn submit" href="#">Registreren</a>
+                    <a class="text-decoration-none btn submit" href="{{ url_for('userr.register') }}">Registreren</a>
                 </div>
             </div>
         </div>

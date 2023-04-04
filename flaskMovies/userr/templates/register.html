@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+
+{% block title %}
+Registreren
+{% endblock %}
+
+{% block contents %}
+
+<form method="POST">
+    {{ form.hidden_tag() }}
+    <div class="mb-3">
+        {{ form.firstname.label }} {{ form.firstname }}
+    </div>
+    <div class="mb-3">
+        {{ form.lastname.label }} {{ form.lastname }}
+    </div>
+    <div class="mb-3">
+        {{ form.username.label }} {{ form.username }}
+    </div>
+    <div class="mb-3">
+        {{ form.email.label }} {{ form.email }}
+    </div>
+    <div class="mb-3">
+        {{ form.password.label }} {{ form.password }}
+    </div>
+    <div class="mb-3">
+        {{ form.pass_confirm.label }} {{ form.pass_confirm }}
+    </div>
+    {{ form.submit() }}
+</form>
+
+{% endblock %}
