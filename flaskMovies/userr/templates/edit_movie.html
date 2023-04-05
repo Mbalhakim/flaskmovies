@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% block title %}
+Film bijwerken
+{% endblock %}
+
+{% block content %}
+  <h1>Film bijwerken</h1>
+  <form method="post" action="{{ url_for('userr.edit_movie', id=movie.id) }}">
+    {{ form.hidden_tag() }}
+    <div class="form-group">
+      {{ form.title.label(class="form-control-label") }}
+      {{ form.title(class="form-control form-control-lg") }}
+    </div>
+    <button type="submit" class="btn btn-primary">Opslaan</button>
+  </form>
+{% endblock %}

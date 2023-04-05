@@ -25,3 +25,64 @@ class User(db.Model, UserMixin):
 
     def check_password(self, password):
         return check_password_hash(self.password_hash, password)
+
+class Category(db.Model):
+    __tablename__ = 'category'
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.Text, nullable=False)
+
+    def __init__(self, name):
+        self.name = name
+        
+class Director(db.Model):
+    __tablename__ = 'director'
+    id = db.Column(db.Integer, primary_key=True)
+    firstname = db.Column(db.String(64), nullable=False)
+    lastname = db.Column(db.String(64), nullable=False)
+
+    def __init__(self, firstname, lastname):
+        self.firstname = firstname
+        self.lastname = lastname
+        
+class Actor(db.Model):
+    __tablename__ = 'actor'
+    id = db.Column(db.Integer, primary_key=True)
+    firstname = db.Column(db.String(64), nullable=False)
+    lastname = db.Column(db.String(64), nullable=False)
+
+    def __init__(self, firstname, lastname):
+        self.firstname = firstname
+        self.lastname = lastname
+
+class Movie(db.Model):
+    __tablename__ = 'movies'
+    id = db.Column(db.Integer, primary_key = True)
+    title = db.Column(db.Text, nullable=False)
+    description = db.Column(db.Text)
+    release_date = db.Column(db.Date)
+    
+    category_id = db.Column(db.Integer, db.ForeignKey('category.id'))
+    category = db.relationship('Category', backref='Movie', uselist=False)
+    
+    director_id = db.Column(db.Integer, db.ForeignKey('director.id'))
+    director = db.relationship('Director', backref='Movie', uselist=False)
+
+    def __init__(self, title, description, release_date, category_id, director_id):
+        self.title = title
+        self.description = description
+        self.release_date = release_date
+        self.category_id = category_id
+        self.director_id = director_id
+        
+class Movie_actor(db.Model):
+    __tablename__ = 'movie_actor'
+    id = db.Column(db.Integer, primary_key=True)
+    movie_id = db.Column(db.Integer, db.ForeignKey('movies.id'))
+    movie = db.relationship('Movie', backref='Movie_actor', uselist=False)
+    
+    actor_id = db.Column(db.Integer, db.ForeignKey('actor.id'))
+    actor = db.relationship('Actor', backref='Movie_actor', uselist=False)
+
+    def __init__(self, movie_id, actor_id):
+        self.movie_id = movie_id
+        self.actor_id = actor_id

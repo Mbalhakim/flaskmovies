@@ -7,6 +7,11 @@ Inloggen
 {% block contents %}
 <div class="col-8 login-bg rounded mx-auto">
     <div class="row">
+        {% if error %}
+        <div class="alert alert-danger">
+            {{ error }}
+        </div>
+        {% endif %}
         <div class="col-6 p-5 border-form">
             <form method="POST">
                 {{ form.hidden_tag() }}

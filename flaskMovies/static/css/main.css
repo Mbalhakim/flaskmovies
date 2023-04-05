@@ -21,9 +21,13 @@ nav .nav-link:hover{
     background-color: #fff!important;
     color: #343a40!important;
 }
+main{
+    min-height: 810px;
+}
 /* home */
 #home-movies .movie-wrapper{
-    height: 360px;
+    height: 330px;
+    position: relative;
 }
 .movie-title{
     position: relative;
@@ -33,8 +37,6 @@ nav .nav-link:hover{
 /* footer */
 footer{
     background-color: rgba(12,13,17,.7);
-    bottom: 0px;
-    position: absolute;
     width: 100%;
 }
 /* Login Form */
@@ -72,4 +74,13 @@ footer{
 }
 .login-bg .submit:hover{
     background: #f96b6b;
+}
+.overlay{
+    background: #000;
+    opacity: 0.3;
+    height: 100%;
+    position: absolute;
+    width: 100%;
+    top: 0px;
+    left: 0px;
 }
