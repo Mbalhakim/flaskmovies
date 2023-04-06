@@ -45,6 +45,7 @@ class AddFilmForm(FlaskForm):
     actor4_lastname = StringField("Achternaam:", validators=[DataRequired()])
     submit = SubmitField("Toevoegen")
     
+    
     def validate_title(self, field):
         no_space = field.data.replace(" ", "")
         if Movie.query.filter_by(title=field.data).first() or Movie.query.filter_by(title=no_space).first():

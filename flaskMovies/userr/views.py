@@ -142,7 +142,13 @@ def delete_movie(id):
 @admin_required
 def edit_movie(id):
     movie = Movie.query.filter_by(id=id).first()
-    form = AddFilmForm(obj=movie)
+    director = Director.query.filter_by(id=movie.director_id).first()
+    # movie_actor = Movie_actor.query.filter_by(movie_id=id).first()
+    # actor = Actor.query.filter_by(id=movie_actor.actor_id).first()
+    actors = Actor.query.join(Movie_actor).filter(Movie_actor.movie_id==id).all()
+    actor = ', '.join([actor.firstname for actor in actors])
+    form = AddFilmForm()
+    print(actor)
 
     # if form.validate_on_submit():
     #     movie.title = form.title.data
@@ -150,6 +156,6 @@ def edit_movie(id):
     #     flash('De film is bijgewerkt!')
     #     return redirect(url_for('userr.film_manager'))
 
-    return render_template('edit_movie.html', form=form, movie=movie)
+    return render_template('edit_movie.html', form=form, movie=movie, director=director, actor=actor)
     
     
