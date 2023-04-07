@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+
+{% block title %}
+Film bijwerken
+{% endblock %}
+
+{% block contents %}
+<div class="col-6 mx-auto py-5">
+  <h1 class="mb-4">Film bijwerken</h1>
+  <form method="post" action="{{ url_for('userr.edit_movie', id=movie.id) }}">
+    {{ form.hidden_tag() }}
+    <div class="form-group mb-2">
+      {{ form.title.label(class="form-control-label") }}
+      {{ form.title(class="form-control form-control", value=movie.title) }}
+    </div>
+    <div class="form-group mb-2">
+      {{ form.description.label(class="form-control-label") }}
+      <textarea class="form-control form-control" id="description" name="description" required>{{ movie.description }}</textarea>
+    </div>
+    <div class="form-group mb-2">
+      {{ form.release_date.label(class="form-control-label") }}
+      {{ form.release_date(class="form-control form-control", value=movie.release_date) }}
+    </div>
+    <div class="form-group mb-2">
+      {{ form.director_firstname.label(class="form-control-label") }}
+      {{ form.director_firstname(class="form-control form-control", value=director.firstname) }}
+      {{ form.director_lastname.label(class="form-control-label") }}
+      {{ form.director_lastname(class="form-control form-control", value=director.lastname) }}
+    </div>
+    <div>Actoren:</div>
+    <div class="form-group mb-2">
+      <div>Actor 1:</div>
+      {{ form.actor1_firstname.label(class="form-control-label") }}
+      {{ form.actor1_firstname(class="form-control form-control", value=actor.firstname) }}
+      {{ form.actor1_lastname.label(class="form-control-label") }}
+      {{ form.actor1_lastname(class="form-control form-control", value=actor.lastname) }}
+    </div>
+    <button type="submit" class="btn btn-primary">Opslaan</button>
+    <p>Actors: {{ actor }}</p>
+  </form>
+</div>
+{% endblock %}

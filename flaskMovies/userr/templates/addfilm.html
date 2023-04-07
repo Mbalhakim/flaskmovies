@@ -7,10 +7,17 @@ Film toevoegen
 {% block contents %}
 <section id="add-movie" class="py-5">
     <h3>Een film toevoegen</h3>
-    <form method="post" action="/vote">
+    <form method="post" action="{{ url_for('userr.addfilm') }}">
         {{ form.hidden_tag() }}
         <div class="mb-3">
             {{ form.title.label }} {{ form.title }}
+            {% if form.title.errors %}
+            <div class="errors text-danger">
+                {% for error in form.title.errors %}
+                <div>{{ error }}</div>
+                {% endfor %}
+            </div>
+            {% endif %}
         </div>
         <div class="mb-3">
             {{ form.description.label }} {{ form.description }}
@@ -23,8 +30,8 @@ Film toevoegen
         </div>
         <div class="mb-2">Regisuur:</div>
         <div class="mb-3">
-            {{ form.actor1_firstname.label }} {{ form.actor1_firstname }}
-            {{ form.actor1_lastname.label }} {{ form.actor1_lastname }}
+            {{ form.director_firstname.label }} {{ form.director_firstname }}
+            {{ form.director_lastname.label }} {{ form.director_lastname }}
         </div>
         <div class="mb-2">Actoren:</div>
         <div class="mb-3">
@@ -40,7 +47,7 @@ Film toevoegen
         <div class="mb-3">
             <div>Actor3</div>
             {{ form.actor3_firstname.label }} {{ form.actor3_firstname }}
-            {{ form.actor3_lastname.label }} {{ form.actor4_lastname }}
+            {{ form.actor3_lastname.label }} {{ form.actor3_lastname }}
         </div>
         <div class="mb-3">
             <div>Actor4</div>

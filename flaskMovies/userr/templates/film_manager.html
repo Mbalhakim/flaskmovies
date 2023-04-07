@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+
+{% block title %}
+Films beheer
+{% endblock %}
+
+{% block contents %}
+
+<section id="home-movies" class="py-5">
+    <div class="col-10 mx-auto">
+        <h1 class="mb-4">Films beheer</h1>
+        <div class="row">
+            {% for movie in movies %}
+            <div class="col-3 mb-4">
+                <div class="movie-wrapper w-100 text-center">
+                    <img class="h-100 w-100" src="../static/images/tt10366206.jpg" alt="{{ movie.title }}">
+                    <div class="overlay"></div>
+                    <span class="movie-title h5">{{ movie.title }}</span>
+                </div>
+                <div class="row gx-0 text-center">
+                    <div class="col-6"><a class="btn btn-primary rounded-0 w-100" href="{{ url_for('userr.edit_movie', id=movie.id) }}">Bewerken</a></div>
+                    <div class="col-6">
+                        <form action="{{ url_for('userr.delete_movie', id=movie.id) }}" method="POST">
+                            <button type="submit" class="btn btn-danger rounded-0 w-100">Verwijderen</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endblock %}
