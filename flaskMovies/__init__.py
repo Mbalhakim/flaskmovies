@@ -16,6 +16,8 @@ login_manager = LoginManager()
 login_manager.init_app(app)
 login_manager.login_view = "userr.login"
 
-
 from flaskMovies.userr.views import userr_blueprint
 app.register_blueprint(userr_blueprint, url_prefix="/userr")
+
+from flaskMovies.movie.views import movie_blueprint
+app.register_blueprint(movie_blueprint, url_prefix="/movie")

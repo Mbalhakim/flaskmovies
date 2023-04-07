@@ -3,6 +3,7 @@ from wtforms import StringField, PasswordField, SelectField, SubmitField, DateFi
 from wtforms.validators import DataRequired, EqualTo, Email
 from wtforms import ValidationError
 from flaskMovies.models import User, Movie
+from flask import request
 
 class RegistrationForm(FlaskForm):
     firstname = StringField('Voornaam', validators=[DataRequired()])
@@ -15,12 +16,12 @@ class RegistrationForm(FlaskForm):
         
     def validate_username(self, field):
         no_space = field.data.replace(" ", "")
-        if User.query.filter_by(username=field.data).first() or Movie.query.filter_by(username=no_space).first():
+        if User.query.filter_by(username=field.data).first() or User.query.filter_by(username=no_space).first():
             raise ValidationError('Deze gebruikersnaam is al vergeven, probeer een andere naam')
         
     def validate_email(self, field):
         no_space = field.data.replace(" ", "")
-        if User.query.filter_by(email=field.data).first() or Movie.query.filter_by(email=no_space).first():
+        if User.query.filter_by(email=field.data).first() or User.query.filter_by(email=no_space).first():
             raise ValidationError('Deze emailadres is al in gebruik')
 
 class LoginForm(FlaskForm):
@@ -35,6 +36,7 @@ class AddFilmForm(FlaskForm):
     category = SelectField('Categorie:', choices=[])
     director_firstname = StringField("Voornaam:", validators=[DataRequired()])
     director_lastname = StringField("Achternaam:", validators=[DataRequired()])
+    director_lastname = StringField("Achternaam:", validators=[DataRequired()])
     actor1_firstname = StringField("Voornaam:", validators=[DataRequired()])
     actor1_lastname = StringField("Achternaam:", validators=[DataRequired()])
     actor2_firstname = StringField("Voornaam:", validators=[DataRequired()])
@@ -47,6 +49,7 @@ class AddFilmForm(FlaskForm):
     
     
     def validate_title(self, field):
-        no_space = field.data.replace(" ", "")
-        if Movie.query.filter_by(title=field.data).first() or Movie.query.filter_by(title=no_space).first():
-            raise ValidationError('Deze film bestaat al')
+        if request.path == '/userr/addfilm':
+            no_space = field.data.replace(" ", "")
+            if Movie.query.filter_by(title=field.data).first() or Movie.query.filter_by(title=no_space).first():
+                raise ValidationError('Deze film bestaat al')

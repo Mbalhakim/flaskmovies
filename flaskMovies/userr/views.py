@@ -67,7 +67,11 @@ def register():
 @admin_required
 def dashboard():
     all_users = User.query.all()
-    return render_template('admin_dashboard.html', users=all_users)
+    users_count = User.query.count()
+    movies_count = Movie.query.count()
+    return render_template('admin_dashboard.html', users=all_users,
+                           users_count=users_count,
+                           movies_count=movies_count)
 
 @userr_blueprint.route('/addfilm', methods=['GET', 'POST'])
 @login_required
@@ -141,21 +145,65 @@ def delete_movie(id):
 @login_required
 @admin_required
 def edit_movie(id):
-    movie = Movie.query.filter_by(id=id).first()
-    director = Director.query.filter_by(id=movie.director_id).first()
-    # movie_actor = Movie_actor.query.filter_by(movie_id=id).first()
-    # actor = Actor.query.filter_by(id=movie_actor.actor_id).first()
-    actors = Actor.query.join(Movie_actor).filter(Movie_actor.movie_id==id).all()
-    actor = ', '.join([actor.firstname for actor in actors])
     form = AddFilmForm()
-    print(actor)
+    form.category.choices = [(cat.id, cat.name) for cat in Category.query.order_by('name')]
+    movie = Movie.query.filter_by(id=id).first()
+    form.category.default = movie.category_id
+    director = Director.query.filter_by(id=movie.director_id).first()
+    movie_actor = Actor.query.join(Movie_actor).filter(Movie_actor.movie_id==id) \
+        .order_by(Actor.firstname).all()
+    actors = [[actor.firstname, actor.lastname] for actor in movie_actor]
+    
+    director_id = None
+    if form.validate_on_submit():
+        director_exists = Director.query.filter_by(firstname=form.director_firstname.data, 
+                                         lastname=form.director_lastname.data).first()
 
-    # if form.validate_on_submit():
-    #     movie.title = form.title.data
-    #     db.session.commit()
-    #     flash('De film is bijgewerkt!')
-    #     return redirect(url_for('userr.film_manager'))
-
-    return render_template('edit_movie.html', form=form, movie=movie, director=director, actor=actor)
+        if director_exists is None:
+            update_director = Director(form.director_firstname.data,
+                                form.director_lastname.data)
+            db.session.add(update_director)
+            db.session.commit()
+            director_id = update_director.id
+        else:
+            director_id = director_exists.id
+        movie.title = form.title.data
+        movie.description = form.description.data
+        movie.release_date = form.release_date.data
+        movie.director_id = director_id
+        movie.category_id=form.category.data
+        db.session.commit()
+        
+        ids = []
+        movie_actor = Movie_actor.query.filter_by(movie_id=movie.id).all()
+        current_actors = [ma.actor_id for ma in movie_actor]
+            
+        for i in range(1, 5):
+            actor_firstname = f"{form['actor'+str(i)+'_firstname'].data}"
+            actor_lastname = f"{form['actor'+str(i)+'_lastname'].data}"
+            actor_exists = Actor.query.filter_by(firstname=actor_firstname, lastname=actor_lastname).first()
+            
+            if actor_exists is None:
+                actor = Actor(firstname=actor_firstname, lastname=actor_lastname)
+                db.session.add(actor)
+                db.session.commit()
+                print('added: ', actor_firstname, actor_lastname, actor.id)
+                ids.append(actor.id)
+            else:
+                ids.append(actor_exists.id)
+            
+        for actor_id in current_actors:
+            if actor_id not in ids:
+                Movie_actor.query.filter_by(movie_id=movie.id, actor_id=actor_id).delete()
+                
+        for actor_id in ids:
+            if actor_id not in current_actors:
+                ma = Movie_actor(movie_id=movie.id, actor_id=actor_id)
+                db.session.add(ma)
+        
+        db.session.commit()
+        flash('De film is bijgewerkt!')
+        return redirect(url_for('userr.film_manager'))
+    return render_template('edit_movie.html', form=form, movie=movie, director=director, actors=actors)
     
     
