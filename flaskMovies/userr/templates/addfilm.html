@@ -35,6 +35,16 @@ Film toevoegen
                 {{ form.category(class="form-select") }}
             </div>
         </div>
+        <div class="form-group mb-2 row">
+            <div class="col-6">
+              {{ form.image.label(class="form-control-label") }}
+              {{ form.image(class="form-control") }}
+            </div>
+            <div class="col-6">
+              {{ form.trailer.label(class="form-control-label") }}
+              {{ form.trailer(class="form-control") }}
+            </div>
+          </div>
         <div class="fw-bold">Regisuur:</div>
         <div class="form-group mb-2 row">
             <div class="col-6">
@@ -49,46 +59,62 @@ Film toevoegen
         <div class="fw-bold">Actoren:</div>
         <div class="form-group mb-2 row">
             <div class="fw-bold">Actor1</div>
-            <div class="col-6">
+            <div class="col-4">
                 {{ form.actor1_firstname.label(class="form-control-label") }} 
                 {{ form.actor1_firstname(class="form-control") }}
             </div>
-            <div class="col-6">
+            <div class="col-4">
                 {{ form.actor1_lastname.label(class="form-control-label") }}
                 {{ form.actor1_lastname(class="form-control") }}
+            </div>
+            <div class="col-4">
+                {{ form.actor1_role.label(class="form-control-label") }}
+                {{ form.actor1_role(class="form-control") }}
             </div>
         </div>
         <div class="form-group mb-2 row">
             <div class="fw-bold">Actor2</div>
-            <div class="col-6">
+            <div class="col-4">
                 {{ form.actor2_firstname.label(class="form-control-label") }} 
                 {{ form.actor2_firstname(class="form-control") }}
             </div>
-            <div class="col-6">
+            <div class="col-4">
                 {{ form.actor2_lastname.label(class="form-control-label") }}
                 {{ form.actor2_lastname(class="form-control") }}
+            </div>
+            <div class="col-4">
+                {{ form.actor2_role.label(class="form-control-label") }}
+                {{ form.actor2_role(class="form-control") }}
             </div>
         </div>
         <div class="form-group mb-2 row">
             <div class="fw-bold">Actor3</div>
-            <div class="col-6">
+            <div class="col-4">
                 {{ form.actor3_firstname.label(class="form-control-label") }} 
                 {{ form.actor3_firstname(class="form-control") }}
             </div>
-            <div class="col-6">
+            <div class="col-4">
                 {{ form.actor3_lastname.label(class="form-control-label") }}
                 {{ form.actor3_lastname(class="form-control") }}
+            </div>
+            <div class="col-4">
+                {{ form.actor3_role.label(class="form-control-label") }}
+                {{ form.actor3_role(class="form-control") }}
             </div>
         </div>
         <div class="form-group mb-2 row">
             <div class="fw-bold">Actor4</div>
-            <div class="col-6">
+            <div class="col-4">
                 {{ form.actor4_firstname.label(class="form-control-label") }} 
                 {{ form.actor4_firstname(class="form-control") }}
             </div>
-            <div class="col-6">
+            <div class="col-4">
                 {{ form.actor4_lastname.label(class="form-control-label") }}
                 {{ form.actor4_lastname(class="form-control") }}
+            </div>
+            <div class="col-4">
+                {{ form.actor4_role.label(class="form-control-label") }}
+                {{ form.actor4_role(class="form-control") }}
             </div>
         </div>
         {{ form.submit(class="btn btn-primary mt-2 px-3") }}

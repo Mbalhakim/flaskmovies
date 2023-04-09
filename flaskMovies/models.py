@@ -1,6 +1,7 @@
 from flaskMovies import db, login_manager
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import UserMixin
+from datetime import datetime
 
 @login_manager.user_loader
 def load_user(user_id):
@@ -60,6 +61,8 @@ class Movie(db.Model):
     title = db.Column(db.Text, nullable=False)
     description = db.Column(db.Text)
     release_date = db.Column(db.Date)
+    image = db.Column(db.Text)
+    trailer = db.Column(db.Text)
     
     category_id = db.Column(db.Integer, db.ForeignKey('category.id'))
     category = db.relationship('Category', backref='Movie', uselist=False)
@@ -67,10 +70,12 @@ class Movie(db.Model):
     director_id = db.Column(db.Integer, db.ForeignKey('director.id'))
     director = db.relationship('Director', backref='Movie', uselist=False)
 
-    def __init__(self, title, description, release_date, category_id, director_id):
+    def __init__(self, title, description, release_date, image, trailer, category_id, director_id):
         self.title = title
         self.description = description
         self.release_date = release_date
+        self.image = image
+        self.trailer = trailer
         self.category_id = category_id
         self.director_id = director_id
         
@@ -86,3 +91,39 @@ class Movie_actor(db.Model):
     def __init__(self, movie_id, actor_id):
         self.movie_id = movie_id
         self.actor_id = actor_id
+        
+class Role(db.Model):
+    __tablename__ = 'role'
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.Text)
+    
+    movie_id = db.Column(db.Integer, db.ForeignKey('movies.id'))
+    movie = db.relationship('Movie', backref='Role', uselist=False)
+    
+    actor_id = db.Column(db.Integer, db.ForeignKey('actor.id'))
+    actor = db.relationship('Actor', backref='Role', uselist=False)
+
+    def __init__(self, name, movie_id, actor_id):
+        self.name = name
+        self.movie_id = movie_id
+        self.actor_id = actor_id
+        
+class Quote(db.Model):
+    __tablename__ = 'quotes'
+    id = db.Column(db.Integer, primary_key=True)
+    quote = db.Column(db.Text)
+    date = db.Column(db.Date)
+    time = db.Column(db.Time)
+
+    movie_id = db.Column(db.Integer, db.ForeignKey('movies.id'))
+    movie = db.relationship('Movie', backref='Quote', uselist=False)
+    
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+    user = db.relationship('User', backref='Quote', uselist=False)
+
+    def __init__(self, quote, date, time, movie_id, user_id):
+        self.quote = quote
+        self.date = date
+        self.time = time
+        self.movie_id = movie_id
+        self.user_id = user_id

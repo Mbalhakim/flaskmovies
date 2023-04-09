@@ -1,7 +1,7 @@
 from flaskMovies import db
 from flask import Blueprint, render_template, redirect, request, url_for, flash, session
 from flask_login import login_user, login_required, logout_user, current_user
-from flaskMovies.models import User, Category, Movie, Director, Actor, Movie_actor
+from flaskMovies.models import User, Category, Movie, Director, Actor, Movie_actor, Role
 from flaskMovies.userr.forms import LoginForm, RegistrationForm, AddFilmForm
 from functools import wraps
 
@@ -33,6 +33,7 @@ def login():
         user = User.query.filter_by(username=form.username.data).first()
         if user is not None and user.check_password(form.password.data):
             login_user(user)
+            session['user_id'] = user.id
             session['username'] = user.username
             session['firstname'] = user.firstname
             session['lastname'] = user.lastname
@@ -97,12 +98,15 @@ def addfilm():
                     description=form.description.data,
                     release_date=form.release_date.data,
                     category_id=form.category.data,
+                    image=form.image.data,
+                    trailer=form.trailer.data,
                     director_id=director_id)
         db.session.add(movie)
         db.session.commit()
         for i in range(1, 5):
             actor_firstname = getattr(form, f'actor{i}_firstname').data
             actor_lastname = getattr(form, f'actor{i}_lastname').data
+            actor_role = getattr(form, f'actor{i}_role').data
             actor_exists = Actor.query.filter_by(firstname=actor_firstname, lastname=actor_lastname).first()
             actor_id = None
             if actor_exists is None:
@@ -115,6 +119,8 @@ def addfilm():
 
             movie_actor = Movie_actor(movie_id=movie.id, actor_id=actor_id)
             db.session.add(movie_actor)
+            role = Role(movie_id=movie.id, actor_id=actor_id, name=actor_role)
+            db.session.add(role)
             db.session.commit()
         
         flash(f"Film {form.title.data} is toegevoegd!")
@@ -133,8 +139,11 @@ def film_manager():
 @admin_required
 def delete_movie(id):
     movie_actors = Movie_actor.query.filter_by(movie_id=id).all()
+    roles = Role.query.filter_by(movie_id=id).all()
     for movie_actor in movie_actors:
         db.session.delete(movie_actor)
+    for role in roles:
+        db.session.delete(role)
     movie = Movie.query.filter_by(id=id).first()
     db.session.delete(movie)
     db.session.commit()
@@ -146,14 +155,24 @@ def delete_movie(id):
 @admin_required
 def edit_movie(id):
     form = AddFilmForm()
-    form.category.choices = [(cat.id, cat.name) for cat in Category.query.order_by('name')]
     movie = Movie.query.filter_by(id=id).first()
+    form.category.choices = [(cat.id, cat.name) for cat in Category.query.order_by('name')]
     form.category.default = movie.category_id
     director = Director.query.filter_by(id=movie.director_id).first()
     movie_actor = Actor.query.join(Movie_actor).filter(Movie_actor.movie_id==id) \
         .order_by(Actor.firstname).all()
-    actors = [[actor.firstname, actor.lastname] for actor in movie_actor]
+    actors = [[actor.firstname, actor.lastname, actor.id] for actor in movie_actor]
+
+    role_list = []
+    for i in actors:
+        actor_role = Role.query.join(Actor).filter(Actor.id==i[2]) \
+            .order_by(Actor.firstname).first()
+        role_list.append(actor_role)
     
+    roles = [role.name for role in role_list]
+    for i in range(len(actors)):
+        actors[i].append(roles[i])
+
     director_id = None
     if form.validate_on_submit():
         director_exists = Director.query.filter_by(firstname=form.director_firstname.data, 
@@ -170,6 +189,8 @@ def edit_movie(id):
         movie.title = form.title.data
         movie.description = form.description.data
         movie.release_date = form.release_date.data
+        movie.image = form.image.data
+        movie.trailer = form.trailer.data
         movie.director_id = director_id
         movie.category_id=form.category.data
         db.session.commit()
@@ -181,6 +202,7 @@ def edit_movie(id):
         for i in range(1, 5):
             actor_firstname = f"{form['actor'+str(i)+'_firstname'].data}"
             actor_lastname = f"{form['actor'+str(i)+'_lastname'].data}"
+            actor_role = f"{form['actor'+str(i)+'_role'].data}"
             actor_exists = Actor.query.filter_by(firstname=actor_firstname, lastname=actor_lastname).first()
             
             if actor_exists is None:
@@ -195,15 +217,18 @@ def edit_movie(id):
         for actor_id in current_actors:
             if actor_id not in ids:
                 Movie_actor.query.filter_by(movie_id=movie.id, actor_id=actor_id).delete()
+                Role.query.filter_by(movie_id=movie.id, actor_id=actor_id).delete()
                 
         for actor_id in ids:
             if actor_id not in current_actors:
                 ma = Movie_actor(movie_id=movie.id, actor_id=actor_id)
                 db.session.add(ma)
+                ar = Role(movie_id=movie.id, actor_id=actor_id, name=actor_role)
+                db.session.add(ar)
         
         db.session.commit()
         flash('De film is bijgewerkt!')
         return redirect(url_for('userr.film_manager'))
-    return render_template('edit_movie.html', form=form, movie=movie, director=director, actors=actors)
+    return render_template('edit_movie.html', form=form, movie=movie, director=director, actors=actors, roles=roles)
     
     

@@ -26,7 +26,7 @@ Home
                 <div class="col-3 mb-4">
                     <a class="text-decoration-none text-white" href="{{ url_for('movie.movie_page', name=movie.title.replace(' ', '-'), id=movie.id) }}">
                         <div class="movie-wrapper w-100 text-center">
-                            <img class="h-100 w-100" src="../static/images/tt10366206.jpg" alt="{{ movie.title }}">
+                            <img class="h-100 w-100" src="{{ movie.image }}" alt="{{ movie.title }}">
                             <div class="overlay"></div>
                             <span class="movie-title h5">{{ movie.title }}</span>
                         </div>

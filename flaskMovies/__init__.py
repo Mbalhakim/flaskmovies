@@ -6,7 +6,7 @@ import os
 basedir = os.path.abspath(os.path.dirname(__file__))
 
 app = Flask(__name__)
-app.config['SECRET_KEY'] = "dghenewhewwe633292hfhffhh"
+app.config['SECRET_KEY'] = "dhjdjhgdhgdghdghdjhgdjhdjh"
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + os.path.join(basedir, 'moviefan.sqlite')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 

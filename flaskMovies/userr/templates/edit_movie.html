@@ -15,7 +15,7 @@ Film bijwerken
     </div>
     <div class="form-group mb-2">
       {{ form.description.label(class="form-control-label") }}
-      <textarea class="form-control form-control" id="description" name="description" required>{{ movie.description }}</textarea>
+      <textarea class="form-control" id="description" name="description" required>{{ movie.description }}</textarea>
     </div>
     <div class="form-group mb-2 row">
       <div class="col-6">
@@ -35,6 +35,16 @@ Film bijwerken
         </select>
       </div>
     </div>
+    <div class="form-group mb-2 row">
+      <div class="col-6">
+        {{ form.image.label(class="form-control-label") }}
+        {{ form.image(class="form-control", value=movie.image) }}
+      </div>
+      <div class="col-6">
+        {{ form.trailer.label(class="form-control-label") }}
+        {{ form.trailer(class="form-control", value=movie.trailer) }}
+      </div>
+    </div>
     <div class="fw-bold">Regisuur:</div>
     <div class="form-group mb-2 row">
       <div class="col-6">
@@ -50,17 +60,21 @@ Film bijwerken
     {% for actor in actors %}
       <div class="form-group mb-2 row">
         <div class="fw-bold">Actor {{ loop.index }}:</div>
-        <div class="col-6">
+        <div class="col-4">
           {{ form['actor' ~ loop.index ~ '_firstname'].label(class="form-control-label") }}
           {{ form['actor' ~ loop.index ~ '_firstname'](class="form-control", value=actor[0]) }}
         </div>
-        <div class="col-6">
+        <div class="col-4">
           {{ form['actor' ~ loop.index ~ '_lastname'].label(class="form-control-label") }}
           {{ form['actor' ~ loop.index ~ '_lastname'](class="form-control", value=actor[1]) }}
         </div>
+        <div class="col-4">
+          {{ form['actor' ~ loop.index ~ '_role'].label(class="form-control-label") }}
+          {{ form['actor' ~ loop.index ~ '_role'](class="form-control", value=actor[3]) }}
+      </div>
       </div>
     {% endfor %}
-    <button type="submit" name="submit" class="btn btn-primary mt-2 px-3">Opslaan</button>
+    <button id="submit" type="submit" name="submit" class="btn btn-primary mt-2 px-3">Opslaan</button>
   </form>
 </div>
 {% endblock %}

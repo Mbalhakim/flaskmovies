@@ -155,3 +155,9 @@ footer{
 .movie-bg textarea.add:focus{
     outline: none;
 }
+.movie-bg .q-quote{
+    font-size: 18px;
+}
+.movie-bg .q-date{
+    font-size: 14px;
+}
