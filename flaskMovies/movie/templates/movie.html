@@ -81,10 +81,19 @@
     <div class="h5">Citaten</div>
     {% for q in quotes %}
     <div class="citaat px-3 py-2 mb-3">
-        <span class="q-quote">@{{ q[4] }}</span>
-        <span class="q-date">geplaatst op {{ q[1].strftime('%d-%m-%Y') }} om {{ q[2].strftime('%H:%M') }}</span>
+        <span class="q-quote text-success text-capitalize">@{{ q[5] }}</span>
+        <span class="q-date pe-3">geplaatst op {{ q[2].strftime('%d-%m-%Y') }} om {{ q[3].strftime('%H:%M') }}</span>
+        {% if current_user.is_authenticated and session.user_id == q[4] or is__admin == session.user_id %}
+        <form class="d-inline" action="{{ url_for('movie.delete_quote', id=movie.id, d_id=q[0], u_id=q[4]) }}" method="POST">
+            <button type="submit" class="btn btn-danger p-0" title="Verwijderen"><span class="material-icons align-middle">delete</span></button>
+        </form>
+        <button type="button" class="btn btn-primary p-0" data-user="{{ q[5] }}" data-quote="{{ q[1] }}" data-id="{{ q[0] }}" data-uid="{{ q[4] }}"
+        data-date="{{ q[2].strftime('%d-%m-%Y') }}" data-time="{{ q[3].strftime('%H:%M') }}" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+            <span class="material-icons align-middle">edit</span>
+        </button>
+        {% endif %}
         <div class="">
-            {{ q[0] }}
+            {{ q[1] }}
         </div>
     </div>
     {% endfor %}
@@ -98,4 +107,47 @@
     </form>
     {% endif %}
 </section>
+<div class="modal fade text-dark" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+            <h6 class="modal-title fs-5" id="staticBackdropLabel">
+                <span class="q-quote text-success text-capitalize">@<span class="modal-user"></span></span>
+                <span class="q-date pe-3">geplaatst op <span class="modal-date"></span><span> om </span><span class="modal-time"></span></span>
+            </h6>
+            <button type="button" class="btn-close close-m" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <form id="update_quote" method="POST" action="{{ url_for('movie.update_quote', id=movie.id) }}">
+            {{ form3.hidden_tag() }}
+            <div class="modal-body">
+                {{ form3.modal_quote }}
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary close-m" data-bs-dismiss="modal">Annuleren</button>
+                <button id="submit" type="submit" name="submit" class="btn btn-primary">Opslaan</button>
+            </div>
+        </form>
+      </div>
+    </div>
+</div>
+<script>
+    $('#staticBackdrop').on('show.bs.modal', function (event) {
+        var button = $(event.relatedTarget)
+        var id = button.data('id')
+        var user_id = button.data('uid')
+        var username = button.data('user')
+        var date = button.data('date')
+        var time = button.data('time')
+        var quote = button.data('quote')
+        $(this).find('.modal-user').html(username)
+        $(this).find('.modal-date').html(date)
+        $(this).find('.modal-time').html(time)
+        $(this).find('#modal_quote').val(quote)
+        $(this).find('#q_id').val(id)
+        $(this).find('#q_uid').val(user_id)
+        $('.close-m').click(function() {
+            $('#staticBackdrop').find('#modal_quote').val(quote)
+        });
+    });
+</script>
 {% endblock %}
