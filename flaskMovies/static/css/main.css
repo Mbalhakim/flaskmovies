@@ -1,6 +1,7 @@
 body{
     background-color: #212342!important;
     color: #fff!important;
+    
 }
 /* navbar */
 .navbar-bg{
@@ -35,10 +36,35 @@ main{
     z-index: 999;
 }
 /* footer */
-footer{
+footer {
     background-color: rgba(12,13,17,.7);
     width: 100%;
+    position: fixed;
+    bottom: 0;
+  }
+
+/* Register form*/
+.register-bg{
+    background-color: rgba(12,13,17,.7);
+   
+   
 }
+.register-bg .border-form{
+    border-right: 1px solid rgba(255,255,255,.1);
+}
+.register-bg input:not(.btn){
+    display: block;
+    font-size: 14px;
+   
+    
+    height: 42px;
+    border-radius: 3px;
+    border: 0;
+}
+
+
+
+
 /* Login Form */
 .login-bg{
     background-color: rgba(12,13,17,.7);
