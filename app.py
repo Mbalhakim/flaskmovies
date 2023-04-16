@@ -1,12 +1,15 @@
 from flask import Flask, render_template
 from flaskMovies.models import Movie
 from flaskMovies import app
+import random
+
 
 ### ROUTES:
 
 @app.route('/')
 def index():
-     movies = Movie.query.all()
+     allmovies = Movie.query.all()
+     movies = random.sample(allmovies, 8)
      return render_template('index.html', movies=movies)
 
 @app.route('/films')
