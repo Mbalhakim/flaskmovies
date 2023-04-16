@@ -44,7 +44,7 @@ def movie_page(name, id):
     for i in range(len(quotes)):
         quotes[i].append(users[i])
         
-        is__admin = None
+    is__admin = None
     if current_user.is_authenticated:
         if current_user.is_admin:
             is__admin = session['user_id']

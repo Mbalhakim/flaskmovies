@@ -39,9 +39,8 @@ main{
 footer {
     background-color: rgba(12,13,17,.7);
     width: 100%;
-    position: fixed;
     bottom: 0;
-  }
+}
 
 /* Register form*/
 .register-bg{
@@ -186,4 +185,15 @@ footer {
 }
 .movie-bg .q-date{
     font-size: 14px;
+}
+#modal_quote{
+    background: rgb(114 121 144);
+    border: 1px solid #fff;
+    width: 100%;
+    color: #fff;
+    border-radius: 10px;
+    height: 150px;
+    padding: 10px;
+    resize: none;
+    font-size: 16px; /* Set the font size to 16px */
 }

@@ -18,8 +18,12 @@
       </div>
       <div class="col-4 text-end">
         {% if current_user.is_authenticated %}
-        <span class="fw-bold text-white px-3 py-2 d-inline">Ingelogd als: <span class="text-dark px-2">{{ session.username }} ({{ session.firstname }} {{ session.lastname }})</span></span>
-        <a class="nav-link fw-bold text-white px-3 py-2 rounded-pill nav-btns d-inline" href="{{ url_for('userr.logout') }}">Uitloggen</a>
+        <div class="row">
+         
+          <div class="col"><span class="fw-bold text-white px-3 py-2 d-inline">Ingelogd als:  <span class="text-dark  py-1">{{ session.username }}<br> ({{ session.firstname }} {{ session.lastname }})</span></span></div>
+          <div class="col py-1"><a class="nav-link fw-bold text-white text-center py-2 just rounded-pill nav-btns " href="{{ url_for('userr.logout') }}">Uitloggen</a></div>
+        
+        </div>
         {% else %}
         <a class="nav-link fw-bold text-white px-3 py-2 rounded-pill nav-btns d-inline me-3" href="{{ url_for('userr.login') }}">Inloggen</a>
         <a class="nav-link fw-bold text-white px-3 py-2 rounded-pill nav-btns d-inline" href="{{ url_for('userr.register') }}">Registreren</a>
