@@ -1,0 +1,80 @@
+{% extends "base.html" %}
+
+{% block title %}
+Film bijwerken
+{% endblock %}
+
+{% block contents %}
+<div class="col-6 mx-auto py-5">
+  <h1 class="mb-4">Film bijwerken</h1>
+  <form method="POST" action="{{ url_for('userr.edit_movie', id=movie.id) }}">
+    {{ form.hidden_tag() }}
+    <div class="form-group mb-2">
+      {{ form.title.label(class="form-control-label") }}
+      {{ form.title(class="form-control", value=movie.title) }}
+    </div>
+    <div class="form-group mb-2">
+      {{ form.description.label(class="form-control-label") }}
+      <textarea class="form-control" id="description" name="description" required>{{ movie.description }}</textarea>
+    </div>
+    <div class="form-group mb-2 row">
+      <div class="col-6">
+        {{ form.release_date.label(class="form-control-label") }}
+        {{ form.release_date(class="form-control", value=movie.release_date) }}
+      </div>
+      <div class="col-6">
+        {{ form.category.label(class="form-control-label") }} 
+        <select id="{{ form.category.id }}" name="{{ form.category.name }}" class="form-select" aria-label="{{ form.category.label }}" required>
+          {% for choice in form.category.choices %}
+              {% if choice[0] == form.category.default %}
+                  <option value="{{ choice[0] }}" selected>{{ choice[1] }}</option>
+              {% else %}
+                  <option value="{{ choice[0] }}">{{ choice[1] }}</option>
+              {% endif %}
+          {% endfor %}
+        </select>
+      </div>
+    </div>
+    <div class="form-group mb-2 row">
+      <div class="col-6">
+        {{ form.image.label(class="form-control-label") }}
+        {{ form.image(class="form-control", value=movie.image) }}
+      </div>
+      <div class="col-6">
+        {{ form.trailer.label(class="form-control-label") }}
+        {{ form.trailer(class="form-control", value=movie.trailer) }}
+      </div>
+    </div>
+    <div class="fw-bold">Regisuur:</div>
+    <div class="form-group mb-2 row">
+      <div class="col-6">
+        {{ form.director_firstname.label(class="form-control-label") }}
+        {{ form.director_firstname(class="form-control", value=director.firstname) }}
+      </div>
+      <div class="col-6">
+        {{ form.director_lastname.label(class="form-control-label") }}
+        {{ form.director_lastname(class="form-control", value=director.lastname) }}
+      </div>
+    </div>
+    <div class="fw-bold">Actoren:</div>
+    {% for actor in actors %}
+      <div class="form-group mb-2 row">
+        <div class="fw-bold">Actor {{ loop.index }}:</div>
+        <div class="col-4">
+          {{ form['actor' ~ loop.index ~ '_firstname'].label(class="form-control-label") }}
+          {{ form['actor' ~ loop.index ~ '_firstname'](class="form-control", value=actor[0]) }}
+        </div>
+        <div class="col-4">
+          {{ form['actor' ~ loop.index ~ '_lastname'].label(class="form-control-label") }}
+          {{ form['actor' ~ loop.index ~ '_lastname'](class="form-control", value=actor[1]) }}
+        </div>
+        <div class="col-4">
+          {{ form['actor' ~ loop.index ~ '_role'].label(class="form-control-label") }}
+          {{ form['actor' ~ loop.index ~ '_role'](class="form-control", value=actor[3]) }}
+      </div>
+      </div>
+    {% endfor %}
+    <button id="submit" type="submit" name="submit" class="btn btn-primary mt-2 px-3">Opslaan</button>
+  </form>
+</div>
+{% endblock %}

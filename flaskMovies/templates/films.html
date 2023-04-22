@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% block title %}
+Films
+{% endblock %}
+
+{% block contents %}
+    <section id="home-movies" class="py-5">
+      
+        <div class="col-11 mx-auto">
+            <h1 class="bg-danger text-light py-4 text-center rounded"> Here are every movie that our website have so far.</h1>
+            <div class="row py-3">
+                {% for movie in movies %}
+                <div class="col-3 mb-4">
+                    <a class="text-decoration-none text-white" href="{{ url_for('movie.movie_page', name=movie.title.replace(' ', '-'), id=movie.id) }}">
+                        <div class="movie-wrapper w-100 text-center">
+                            <img class="h-100 w-100" src="{{ movie.image }}" alt="{{ movie.title }}">
+                            <div class="overlay"></div>
+                            <span class="movie-title h5">{{ movie.title }}</span>
+                        </div>
+                    </a>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+{% endblock %}
