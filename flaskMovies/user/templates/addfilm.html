@@ -8,7 +8,7 @@ Film toevoegen
 <section id="add-movie" class="py-5">
     <div class="col-6 mx-auto">
     <h1 class="mb-4">Een film toevoegen</h1>
-    <form method="post" action="{{ url_for('userr.addfilm') }}">
+    <form method="post" action="{{ url_for('user.addfilm') }}">
         {{ form.hidden_tag() }}
         <div class="form-group mb-2">
             {{ form.title.label(class="form-control-label") }}

@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, SelectField, SubmitField, DateField, TextAreaField
+from wtforms import StringField, PasswordField, SelectField, SubmitField, DateField, TextAreaField, HiddenField, BooleanField 
 from wtforms.validators import DataRequired, EqualTo, Email
 from wtforms import ValidationError
 from flaskMovies.models import User, Movie
@@ -23,6 +23,16 @@ class RegistrationForm(FlaskForm):
         no_space = field.data.replace(" ", "")
         if User.query.filter_by(email=field.data).first() or User.query.filter_by(email=no_space).first():
             raise ValidationError('Deze emailadres is al in gebruik')
+        
+class UpdateUserForm(FlaskForm):
+    firstname = StringField('Voornaam', validators=[DataRequired()])
+    lastname = StringField('Achternaam', validators=[DataRequired()])
+    email = StringField('Email', validators=[DataRequired(), Email()])
+    is_admin = BooleanField('Is Admin')
+    submit = SubmitField('Bijwerken')
+
+
+      
 
 class LoginForm(FlaskForm):
     username = StringField('Gebruikersnaam', validators=[DataRequired()])
@@ -55,7 +65,11 @@ class AddFilmForm(FlaskForm):
     
     
     def validate_title(self, field):
-        if request.path == '/userr/addfilm':
+        if request.path == '/user/addfilm':
             no_space = field.data.replace(" ", "")
             if Movie.query.filter_by(title=field.data).first() or Movie.query.filter_by(title=no_space).first():
                 raise ValidationError('Deze film bestaat al')
+            
+            
+
+            

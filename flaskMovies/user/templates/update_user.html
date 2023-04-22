@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+
+{% block title %}
+    Update User
+{% endblock %}
+
+{% block contents %}
+    <h1>Update User</h1>
+    <form method="post">
+        {{ form.hidden_tag() }}
+        <div class="form-group">
+            {{ form.firstname.label(class="form-control-label") }}
+            {{ form.firstname(class="form-control") }}
+            {% if form.firstname.errors %}
+                <div class="form-text text-danger">{{ form.firstname.errors[0] }}</div>
+            {% endif %}
+        </div>
+        <div class="form-group">
+            {{ form.lastname.label(class="form-control-label") }}
+            {{ form.lastname(class="form-control") }}
+            {% if form.lastname.errors %}
+                <div class="form-text text-danger">{{ form.lastname.errors[0] }}</div>
+            {% endif %}
+        </div>
+        <div class="form-group">
+            {{ form.email.label(class="form-control-label") }}
+            {{ form.email(class="form-control") }}
+            {% if form.email.errors %}
+                <div class="form-text text-danger">{{ form.email.errors[0] }}</div>
+            {% endif %}
+        </div>
+        <div class="form-group">
+            {{ form.is_admin.label(class="form-check-label") }}
+            {{ form.is_admin(class="form-check-input") }}
+            {% if form.is_admin.errors %}
+                <div class="form-text text-danger">{{ form.is_admin.errors[0] }}</div>
+            {% endif %}
+        </div>
+        <button type="submit" class="btn btn-primary">Update</button>
+    </form>
+{% endblock %}

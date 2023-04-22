@@ -2,12 +2,18 @@ from flaskMovies import db
 from flask import Blueprint, render_template, redirect, request, url_for, flash, session
 from flask_login import login_user, login_required, logout_user, current_user
 from flaskMovies.models import User, Category, Movie, Director, Actor, Movie_actor, Role, Quote
-from flaskMovies.userr.forms import LoginForm, RegistrationForm, AddFilmForm
+from flaskMovies.user.forms import LoginForm, RegistrationForm, AddFilmForm, UpdateUserForm
 from functools import wraps
 
-userr_blueprint = Blueprint('userr', __name__, template_folder='templates')
+user_blueprint = Blueprint('user', __name__, template_folder='templates')
 
-@userr_blueprint.route('/logout')
+
+
+
+
+
+
+@user_blueprint.route('/logout')
 @login_required
 def logout():
     logout_user()
@@ -22,10 +28,41 @@ def admin_required(func):
         return func(*args, **kwargs)
     return decorated_view
 
-@userr_blueprint.route('/login', methods=['GET', 'POST'])
+@user_blueprint.route('/dashboard')
+@admin_required
+def dashboard():
+    movies = Movie.query.all()
+    users = User.query.all()
+    return render_template('admin_dashboard.html', users=users, movies=movies)
+
+@user_blueprint.route('/users/update/<int:user_id>', methods=['GET', 'POST'])
+@login_required
+@admin_required
+def update_user(user_id):
+    user = User.query.get(user_id)
+    form = UpdateUserForm(obj=user)
+    if form.validate_on_submit():
+        form.populate_obj(user)
+        db.session.commit()
+        flash('User updated successfully', 'success')
+        return redirect(url_for('user.dashboard'))
+
+    return render_template('update_user.html', form=form)
+
+@user_blueprint.route('/<int:user_id>/delete', methods=['POST'])
+@admin_required
+@login_required
+def delete_user(user_id):
+    user = User.query.filter_by(id=user_id).first_or_404()
+    db.session.delete(user)
+    db.session.commit()
+    flash('User has been deleted', 'success')
+    return redirect(url_for('user.dashboard'))
+
+@user_blueprint.route('/login', methods=['GET', 'POST'])
 def login():
     if current_user.is_authenticated:
-        return redirect(url_for('userr.dashboard'))
+        return redirect(url_for('user.dashboard'))
     
     form = LoginForm()
     error = None
@@ -38,14 +75,14 @@ def login():
             session['firstname'] = user.firstname
             session['lastname'] = user.lastname
             if user.is_admin:
-                return redirect(url_for('userr.dashboard'))
+                return redirect(url_for('user.dashboard'))
             else:
                 return redirect('/')
         else:
             error = 'De combinatie van gebruikersnaam en wachtwoord is niet geldig.'
     return render_template('login.html', form=form, error=error)
 
-@userr_blueprint.route('/register', methods=['GET', 'POST'])
+@user_blueprint.route('/register', methods=['GET', 'POST'])
 def register():
     form = RegistrationForm()
     if form.validate_on_submit():
@@ -59,22 +96,26 @@ def register():
         db.session.commit()
 
         flash('Bedankt voor de registratie. Er kan nu ingelogd worden!')
-        return redirect(url_for('userr.login'))
+        return redirect(url_for('user.login'))
     return render_template('register.html', form=form)
 
 
-@userr_blueprint.route('/dashboard')
-@login_required
-@admin_required
-def dashboard():
-    all_users = User.query.all()
-    users_count = User.query.count()
-    movies_count = Movie.query.count()
-    return render_template('admin_dashboard.html', users=all_users,
-                           users_count=users_count,
-                           movies_count=movies_count)
 
-@userr_blueprint.route('/addfilm', methods=['GET', 'POST'])
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+@user_blueprint.route('/addfilm', methods=['GET', 'POST'])
 @login_required
 @admin_required
 def addfilm():
@@ -124,17 +165,17 @@ def addfilm():
             db.session.commit()
         
         flash(f"Film {form.title.data} is toegevoegd!")
-        return redirect(url_for("userr.addfilm"))
+        return redirect(url_for("user.addfilm"))
     return render_template('addfilm.html', form=form)
         
-@userr_blueprint.route('/film_manager')
+@user_blueprint.route('/film_manager')
 @login_required
 @admin_required
 def film_manager():
     all_movies = Movie.query.all()
     return render_template('film_manager.html', movies=all_movies)
 
-@userr_blueprint.route('/delete/<int:id>', methods=['POST'])
+@user_blueprint.route('/delete/<int:id>', methods=['POST'])
 @login_required
 @admin_required
 def delete_movie(id):
@@ -151,9 +192,9 @@ def delete_movie(id):
     db.session.delete(movie)
     db.session.commit()
     flash('De film is verwijderd!')
-    return redirect(url_for('userr.film_manager'))
+    return redirect(url_for('user.film_manager'))
 
-@userr_blueprint.route('/edit/<int:id>', methods=['GET', 'POST'])
+@user_blueprint.route('/edit/<int:id>', methods=['GET', 'POST'])
 @login_required
 @admin_required
 def edit_movie(id):
@@ -246,7 +287,7 @@ def edit_movie(id):
                     db.session.commit()
         
         flash('De film is bijgewerkt!')
-        return redirect(url_for('userr.film_manager'))
+        return redirect(url_for('user.film_manager'))
     return render_template('edit_movie.html', form=form, movie=movie, director=director, actors=actors, roles=roles)
     
     

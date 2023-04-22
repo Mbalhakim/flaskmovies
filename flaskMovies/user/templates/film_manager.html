@@ -18,9 +18,9 @@ Films beheer
                     <span class="movie-title h5">{{ movie.title }}</span>
                 </div>
                 <div class="row gx-0 text-center">
-                    <div class="col-6"><a class="btn btn-primary rounded-0 w-100" href="{{ url_for('userr.edit_movie', id=movie.id) }}">Bewerken</a></div>
+                    <div class="col-6"><a class="btn btn-primary rounded-0 w-100" href="{{ url_for('user.edit_movie', id=movie.id) }}">Bewerken</a></div>
                     <div class="col-6">
-                        <form action="{{ url_for('userr.delete_movie', id=movie.id) }}" method="POST">
+                        <form action="{{ url_for('user.delete_movie', id=movie.id) }}" method="POST">
                             <button type="submit" class="btn btn-danger rounded-0 w-100">Verwijderen</button>
                         </form>
                     </div>
